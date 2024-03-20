@@ -11,7 +11,7 @@ class TasksListController extends GetxController {
   TextEditingController authorController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   // TextEditingController dateController = TextEditingController();
-  String date = "2021.01.01";
+  var date = "2021.01.01".obs;
   TextEditingController timeController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 

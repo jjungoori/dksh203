@@ -5,6 +5,32 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'TasksListController.dart';
 
+class AppLoadingController extends GetxController with GetSingleTickerProviderStateMixin{
+  AnimationController? animationController;
+
+  bool enabled = false;
+
+  @override
+  void onInit() {
+    super.onInit();
+    animationController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
+  }
+
+  @override
+  void onClose() {
+    animationController!.dispose();
+    super.onClose();
+  }
+
+  void startAnimation() {
+    // animationController!.reset();
+    animationController!.forward();
+  }
+}
+
 void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -19,12 +45,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appFadeController = Get.put(AppLoadingController());
+    appFadeController.startAnimation();
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: FadeTransition(opacity: Tween<double>(begin: 0, end: 1).animate(appFadeController.animationController!), child: MyHomePage()),
     );
   }
 }
@@ -148,6 +176,17 @@ class MyHomePage extends StatelessWidget {
                                 GestureDetector(
                                     onTap: (){
                                       Future<DateTime?> selectedDate = showDatePicker(
+                                        builder: (BuildContext context, Widget? child) {
+                                          return Theme(
+                                            data: ThemeData.dark().copyWith(colorScheme: ColorScheme.dark(
+                                              primary: Color(0xffeeeeee),
+                                              onPrimary: Color(0xff333333),
+                                              // surface: Color(0xff333333),
+                                              // onSurface: Color(0xffeeeeee),
+                                            )),
+                                            child: child!,
+                                          );
+                                        },
                                         context: context,
                                         initialDate: DateTime.now(), // Start with today's date
                                         firstDate: DateTime(2000), // Limit selection to after year 2000 (optional)
@@ -155,7 +194,7 @@ class MyHomePage extends StatelessWidget {
                                       );
                                       selectedDate.then((value) {
                                         if(value != null){
-                                          TasksListController.instance.date = value.year.toString()+"."+value.month.toString().padLeft(2,"0")+"."+value.day.toString().padLeft(2,"0");
+                                          TasksListController.instance.date.value = value.year.toString()+"."+value.month.toString().padLeft(2,"0")+"."+value.day.toString().padLeft(2,"0");
                                         }
                                       });
                                     },
@@ -171,12 +210,12 @@ class MyHomePage extends StatelessWidget {
                                     height: 50,
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0), // Adjust as needed
-                                      child: Text(
-                                        TasksListController.instance.date, // Replace with your desired text
+                                      child: Obx(()=>Text(
+                                        TasksListController.instance.date.value, // Replace with your desired text
                                         style: TextStyle(
                                           color: Color(0xffeeeeee),
                                         ),
-                                      ),
+                                      ),)
                                     ),
                                   ),
                                 ),
@@ -190,7 +229,7 @@ class MyHomePage extends StatelessWidget {
                                 MyButton(title: "추가하기", onPressed: (){
                                   DataController.instance.addDataWithFormat(
                                     title: TasksListController.instance.titleController.text,
-                                    date: TasksListController.instance.date,
+                                    date: TasksListController.instance.date.value,
                                     time: TasksListController.instance.timeController.text,
                                     author: TasksListController.instance.authorController.text,
                                     description: TasksListController.instance.descriptionController.text

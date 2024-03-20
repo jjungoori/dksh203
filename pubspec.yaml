@@ -38,6 +38,7 @@ dependencies:
   get:
   cloud_firestore: ^4.4.3
   firebase_core: ^2.7.0
+  flutter_native_splash: ^2.3.7
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +66,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
+  assets:
+    - assets/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -91,3 +93,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  color: "#111111"
+  image_web: assets/loading.gif

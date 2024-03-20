@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "dksh203",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
