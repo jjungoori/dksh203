@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "711400431988",
+    "project_id": "jgr-int",
+    "storage_bucket": "jgr-int.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711400431988:android:1b7778c1c265ca7f708c21",
+        "android_client_info": {
+          "package_name": "com.jjunguri.dksh203"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5Z8xCwNOAPmu915gItYpZx5nsJc4hE9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
